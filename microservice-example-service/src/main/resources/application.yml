@@ -1,0 +1,50 @@
+server:
+  port: 8080
+spring:
+  # 环境 dev|test|pre|prod
+  profiles:
+    active: dev
+  application:
+    # 服务名
+    name: microservice-example
+    # 上传文件限制
+    http:
+      multipart:
+        max-file-size: 50Mb
+        max-request-size: 100Mb
+
+# mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.feiyuanenv.gges.model
+
+# eureka注册中心配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:123456@118.31.63.28:8761/eureka/
+  instance:
+    prefer-ip-address: true #注册到eureka上服务访问的地址使用ip
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+
+
+#Dubbo相关配置
+dubbo:
+  application:
+    #服务提供方-服务名
+    name: micro-service-provider
+  registry:
+    #注册中心的协议和地址
+    protocol: zookeeper
+    address: 118.31.63.28:2181
+  protocol:
+    #通信规则（通信协议和端口）
+    name: dubbo
+    port: 20880
+#  monitor:
+#    #连接监控中心
+#    protocol: registry
+  scan:
+    #开启包扫描，可替代 @EnableDubbo 注解（扫描Dubbo注解：@Service所在的包）
+    basePackages: com.liwenli.microservice.example.service.dubbo
+

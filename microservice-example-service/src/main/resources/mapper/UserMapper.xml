@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liwenli.microservice.example.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.liwenli.microservice.example.model.po.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="create_id" property="createId" jdbcType="VARCHAR" />
+    <result column="create_name" property="createName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_id" property="updateId" jdbcType="VARCHAR" />
+    <result column="update_name" property="updateName" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="TableName">
+        t_user
+    </sql>
+
+  <sql id="Base_Column_List" >
+    id, name, user_name, password, type, mobile_phone, is_deleted, create_id, create_name, 
+    create_time, update_id, update_name, update_time
+  </sql>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from <include refid="TableName"/>
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="checkUserName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from <include refid="TableName"/>
+    <where>
+      <if test="userName != null and userName != ''">
+        AND name = #{userName, jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from <include refid="TableName"/>
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.liwenli.microservice.example.model.po.User" >
+    insert into <include refid="TableName"/> (id, name, user_name,
+      password, type, mobile_phone, 
+      is_deleted, create_id, create_name, 
+      create_time, update_id, update_name, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{mobilePhone,jdbcType=VARCHAR},
+      #{isDeleted,jdbcType=INTEGER}, #{createId,jdbcType=VARCHAR}, #{createName,jdbcType=VARCHAR},
+      NOW(), #{updateId,jdbcType=VARCHAR}, #{updateName,jdbcType=VARCHAR},
+      NOW())
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.liwenli.microservice.example.model.po.User" >
+    update <include refid="TableName"/>
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="updateId != null" >
+        update_id = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null" >
+        update_name = #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = NOW(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="totalForPage" resultType="java.lang.Integer" parameterType="com.liwenli.microservice.example.model.po.User">
+    SELECT
+        COUNT(*)
+    FROM
+    <include refid="TableName"/>
+    <where>
+      <if test="name != null and name != ''">
+        AND name = #{name, jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="dataForPage" resultMap="BaseResultMap" parameterType="com.liwenli.microservice.example.core.page.Query">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    <include refid="TableName"/>
+    <where>
+      <if test="data.name != null and data.name != ''">
+        AND name = #{data.name, jdbcType=VARCHAR}
+      </if>
+    </where>
+    ORDER BY update_time DESC LIMIT #{pageNum}, #{pageSize}
+  </select>
+
+</mapper>
