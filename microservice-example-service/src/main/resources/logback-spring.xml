@@ -3,7 +3,7 @@
 
     <property name="LOG_HOME" value="../logs/example"/>
     <property name="ENCODER_PATTERN" value="%d{yyyy-MM-dd  HH:mm:ss.SSS} [%thread] %-5level %logger{20} - %msg%n"/>
-    <property name="APPLICATION_NAME" value="micro-service"/>
+    <property name="APPLICATION_NAME" value="microservice-example"/>
 
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
