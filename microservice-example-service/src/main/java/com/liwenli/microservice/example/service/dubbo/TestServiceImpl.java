@@ -1,12 +1,14 @@
 package com.liwenli.microservice.example.service.dubbo;
 
-import com.alibaba.dubbo.config.annotation.Service;
+
+
 import com.liwenli.microservice.example.model.User;
 import com.liwenli.microservice.example.service.TestService;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Service
+@Service(version = "${dubbo.service.version}")
 @Component
 public class TestServiceImpl implements TestService {
 
@@ -16,7 +18,8 @@ public class TestServiceImpl implements TestService {
     @Override
     public String testDubbo(User user){
 
-        return user.getUserName()+user.getPassWord()+port;
+        return user.getUserName()+user.getPassWord()+port+555;
+        //
 
     }
 }

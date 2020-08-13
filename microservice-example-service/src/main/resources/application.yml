@@ -12,6 +12,10 @@ spring:
       multipart:
         max-file-size: 50Mb
         max-request-size: 100Mb
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 118.31.63.28:8848
 
 # mybatis配置
 mybatis:
@@ -19,24 +23,30 @@ mybatis:
   type-aliases-package: com.feiyuanenv.gges.model
 
 # eureka注册中心配置
-eureka:
-  client:
-    service-url:
-      defaultZone: http://admin:123456@118.31.63.28:8761/eureka/
-  instance:
-    prefer-ip-address: true #注册到eureka上服务访问的地址使用ip
-    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://admin:123456@118.31.63.28:8761/eureka/
+#  instance:
+#    prefer-ip-address: true #注册到eureka上服务访问的地址使用ip
+#    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
 
+
+#nacos相关配置
+nacos:
+  service-address: 118.31.63.28
+  port: 8848
 
 #Dubbo相关配置
 dubbo:
+  service:
+    version: 1.0.0
   application:
     #服务提供方-服务名
     name: micro-service-provider
+    qos-enable: true
   registry:
-    #注册中心的协议和地址
-    protocol: zookeeper
-    address: 118.31.63.28:2181
+    address: nacos://${nacos.service-address}:${nacos.port}
   protocol:
     #通信规则（通信协议和端口）
     name: dubbo
@@ -47,4 +57,8 @@ dubbo:
   scan:
     #开启包扫描，可替代 @EnableDubbo 注解（扫描Dubbo注解：@Service所在的包）
     basePackages: com.liwenli.microservice.example.service.dubbo
+
+
+
+
 

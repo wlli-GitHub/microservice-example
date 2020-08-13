@@ -3,7 +3,6 @@ package com.liwenli.microservice.example.controller;
 import com.liwenli.microservice.example.core.exception.CustomException;
 import com.liwenli.microservice.example.core.page.Query;
 import com.liwenli.microservice.example.core.resp.DefaultInterfaceRespVO;
-import com.liwenli.microservice.example.feign.FeignService;
 import com.liwenli.microservice.example.model.po.User;
 import com.liwenli.microservice.example.service.IUserService;
 import io.swagger.annotations.*;
@@ -22,8 +21,6 @@ public class UserController {
     @Autowired
     IUserService userService;
 
-    @Autowired
-    FeignService feignService;
 
     @ApiOperation(value = "分页查询用户列表", notes = "分页查询用户列表")
     @GetMapping(value = "/page")
